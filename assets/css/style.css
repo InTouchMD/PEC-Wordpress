@@ -1,0 +1,18 @@
+
+.pulse-health-form input[type="text"],
+.pulse-health-form input[type="email"],
+.pulse-health-form select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 4px;
+    margin-bottom: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.pulse-health-form label {
+    font-weight: bold;
+}
+.pulse-health-form .error {
+    color: red;
+    font-size: 0.9em;
+}
