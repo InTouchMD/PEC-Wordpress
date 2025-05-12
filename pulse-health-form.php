@@ -2,11 +2,11 @@
 /**
  * Plugin Name: Pulse Health Webform
  * Description: Embed a customizable Pulse Health form and post submissions to Pulse Health API.
- * Version: 1.3
+ * Version: 1.0
  * Author: Pulse Health
  */
 
-defined('ABSPATH') or die('No script kiddies please!');
+defined('ABSPATH') or die();
 
 function pulse_health_enqueue_assets() {
     wp_enqueue_style('pulse-health-form-style', plugin_dir_url(__FILE__) . 'assets/css/style.css');
@@ -19,7 +19,6 @@ function pulse_health_enqueue_assets() {
 }
 add_action('wp_enqueue_scripts', 'pulse_health_enqueue_assets');
 
-// Redirect to settings on activation
 function pulse_health_activate_plugin() {
     add_option('pulse_health_do_activation_redirect', true);
 }
@@ -36,7 +35,6 @@ function pulse_health_redirect_to_settings() {
 }
 add_action('admin_init', 'pulse_health_redirect_to_settings');
 
-// Add settings link to plugin list
 function pulse_health_plugin_action_links($links) {
     $settings_link = '<a href="options-general.php?page=pulse-health">Settings</a>';
     array_unshift($links, $settings_link);
@@ -44,6 +42,5 @@ function pulse_health_plugin_action_links($links) {
 }
 add_filter('plugin_action_links_' . plugin_basename(__FILE__), 'pulse_health_plugin_action_links');
 
-// Include admin and form logic
 require_once plugin_dir_path(__FILE__) . 'admin-settings.php';
 require_once plugin_dir_path(__FILE__) . 'form-render.php';
