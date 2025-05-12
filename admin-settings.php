@@ -8,10 +8,8 @@ function pulse_health_register_settings() {
 }
 add_action('admin_init', 'pulse_health_register_settings');
 
-// All saving logic moved here to avoid header issues
 add_action('admin_init', function () {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
         if (isset($_POST['pulse_test_connection'])) {
             $account_id = sanitize_text_field($_POST['pulse_account_id']);
             $api_key = sanitize_text_field($_POST['pulse_api_key']);
@@ -45,7 +43,7 @@ add_action('admin_init', function () {
         if (isset($_POST['pulse_form_fields'])) {
             update_option('pulse_form_fields', $_POST['pulse_form_fields'] ?? []);
             update_option('pulse_form_order', $_POST['pulse_form_order'] ?? []);
-            // No redirect here — stay on step 3 and show success
+            set_transient('pulse_form_saved', true, 30);
         }
     }
 });
@@ -86,9 +84,21 @@ function pulse_health_options_page() {
         'phone' => 'Phone',
         'phoneIsCallSubscribed' => 'Phone Call Subscribed',
         'phoneIsSmsSubscribed' => 'SMS Subscribed',
+        'highValue' => 'High Value (Custom Field)'
     ];
 
-    echo '<div class="wrap"><h2>Pulse Health Webform Settings</h2>';
+    $form_ready = $account_id && $api_key && $selected_form_id && !empty($saved_fields);
+
+    echo '<div class="wrap">';
+    echo '<img src="https://pulsehealth.tech/logo.svg" alt="Pulse Health" style="max-height:40px; margin-bottom: 1rem;">';
+    echo '<h2>Pulse Health Webform Settings</h2>';
+
+    if ($form_ready && $step === '1') {
+        echo '<div style="background: #f9f9f9; padding: 1rem; border-left: 4px solid #00a0d2;">';
+        echo '<p><strong>To embed your form on any page or post, use the shortcode:</strong></p>';
+        echo '<code>[pulse_health_form]</code>';
+        echo '</div><br>';
+    }
 
     if ($step === '1') {
         echo '<form method="post" action="">';
@@ -153,6 +163,13 @@ function pulse_health_options_page() {
     }
 
     if ($step === '3') {
+        if (get_transient('pulse_form_saved')) {
+            echo '<div class="updated"><p>✅ Form settings saved successfully.</p>';
+            echo '<p><strong>Use this shortcode to embed your form:</strong><br>';
+            echo '<code>[pulse_health_form]</code></p></div>';
+            delete_transient('pulse_form_saved');
+        }
+
         echo '<form method="post" action="">';
         echo '<h3>Select Fields to Display</h3>';
         echo '<p><em>Email will always be included.</em></p>';
