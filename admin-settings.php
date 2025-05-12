@@ -90,7 +90,7 @@ function pulse_health_options_page() {
     $form_ready = $account_id && $api_key && $selected_form_id && !empty($saved_fields);
 
     echo '<div class="wrap">';
-    echo '<img src="https://pulsehealth.tech/logo.svg" alt="Pulse Health" style="max-height:40px; margin-bottom: 1rem;">';
+    echo '<img src="https://pulsehealth.tech/assets/images/ic_pulse-health-new-logos.png" alt="Pulse Health" style="max-height:40px; margin-bottom: 1rem;">';
     echo '<h2>Pulse Health Webform Settings</h2>';
 
     if ($form_ready && $step === '1') {
