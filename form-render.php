@@ -30,7 +30,7 @@ function pulse_health_form_shortcode() {
     });
 
     $form_error = '';
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pulse_form_submit'])) {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pulse_form_submit']) && wp_verify_nonce( $_POST['ph_form_nonce'], 'pulsehealth_form' ))  {
         $contact = [];
         $customFields = [];
 
@@ -92,11 +92,16 @@ function pulse_health_form_shortcode() {
                 return;
             }
         }
+    }elseif($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pulse_form_submit']) && !wp_verify_nonce( $_POST['ph_form_nonce'], 'pulsehealth_form' )) {
+        echo '<p style="color:red;">Invalid form submission (token-mismatch). Please try again.</p>';
+        return;
     }
 
     ob_start(); ?>
     <div class="pulse-health-form">
         <form method="post">
+            <?php wp_nonce_field('pulsehealth_form', 'ph_form_nonce'); ?>
+
             <p><label>Email Address <span style="color:red">*</span></label><br />
                 <input type="email" name="emailAddress" required /></p>
 

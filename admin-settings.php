@@ -83,8 +83,7 @@ function pulse_health_options_page() {
         'country' => 'Country',
         'phone' => 'Phone',
         'phoneIsCallSubscribed' => 'Phone Call Subscribed',
-        'phoneIsSmsSubscribed' => 'SMS Subscribed',
-        'highValue' => 'High Value (Custom Field)'
+        'phoneIsSmsSubscribed' => 'SMS Subscribed'
     ];
 
     $form_ready = $account_id && $api_key && $selected_form_id && !empty($saved_fields);

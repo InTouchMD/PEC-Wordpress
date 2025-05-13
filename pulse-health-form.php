@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Pulse Health Webform
  * Description: Embed a customizable Pulse Health form and post submissions to Pulse Health API.
- * Version: 1.0
+ * Version: 1.0.1
  * Author: Pulse Health
  */
 
