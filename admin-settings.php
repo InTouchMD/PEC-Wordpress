@@ -40,9 +40,12 @@ add_action('admin_init', function () {
             exit;
         }
 
-        if (isset($_POST['pulse_form_fields'])) {
-            update_option('pulse_form_fields', $_POST['pulse_form_fields'] ?? []);
-            update_option('pulse_form_order', $_POST['pulse_form_order'] ?? []);
+        if (isset($_POST['pulse_form_fields']) || isset($_POST['pulse_form_order'])) {
+            $form_fields = $_POST['pulse_form_fields'] ?? [];
+            $form_order  = $_POST['pulse_form_order'] ?? [];
+
+            update_option('pulse_form_fields', array_values($form_fields));
+            update_option('pulse_form_order', $form_order);
             set_transient('pulse_form_saved', true, 30);
         }
     }
@@ -61,8 +64,11 @@ function pulse_health_options_page() {
     $account_id = get_option('pulse_account_id');
     $api_key = get_option('pulse_api_key');
     $selected_form_id = get_option('pulse_form_id');
-    $saved_fields = get_option('pulse_form_fields') ?: [];
-    $saved_order = get_option('pulse_form_order') ?: [];
+
+    $saved_fields = $_POST['pulse_form_fields'] ?? (get_option('pulse_form_fields') ?: []);
+
+    $saved_order = $_POST['pulse_form_order'] ?? (get_option('pulse_form_order') ?: []);
+
 
     $available_fields = [
         'firstName' => 'First Name',
